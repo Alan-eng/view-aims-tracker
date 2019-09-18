@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h2>Aims are Rock!</h2>
+        <ul>
+            <li v-for="goal in goalsList">{{goal.name}}</li>
+        </ul>
+        <input v-model="aimsLabel">
+        <button v-on:click="addGoal">Добавь новую цель</button>
+        <button v-on:click="reverseLabel">Reverse Label</button>
+    </div>
+    <script src="https://unpkg.com/vue"></script>
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                aimsLabel: 'Aims',
+                goalsList: [
+                    { 
+                        name: 'Выучить английский',
+                        steps: ['шаг1', 'шаг2', 'шаг3']
+                    },
+                    { 
+                        name: 'Выучить немецкий',
+                        steps: ['шаг1', 'шаг2', 'шаг3']
+                    },
+                    { 
+                        name: 'Выучить испанский',
+                        steps: ['шаг1', 'шаг2', 'шаг3']
+                    },
+                ]
+            },
+            methods: {
+                addGoal: function() {
+                    this.goalsList.push(
+                        { 
+                        name: this.aimsLabel,
+                        steps: ['шаг1', 'шаг2', 'шаг3']
+                        }
+                    )
+                    this.aimsLabel = '';
+                },
+                reverseLabel: function() {
+                    this.aimsLabel=this.aimsLabel.split('').reverse().join('')
+                }
+            }
+        })
+    </script>
+</body>
+</html>
