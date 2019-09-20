@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta label="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h2>Aims are Rock!</h2>
+        <!-- <ul>
+            <li v-for="goal in goalsLevel1">
+                <todo-item v-bind:goal = "goal">
+                    <todo-item 
+                        v-for="goal in goalsLevel1[0].goalsLevel2"
+                        v-bind:goal = "goal">
+                </todo-item>
+            </li>
+        </ul> -->
+        <!-- <input v-model="label">
+        <button v-on:click="addGoal">Добавь новую цель</button>
+        <button v-on:click="reverseLabel">Reverse Label</button>
+        <div>Всего целей: {{totalNumberOfGoals}}</div> -->
+        <folder-component :folder='treeData'>
+    </div>
+    <script src="https://unpkg.com/vue"></script>
+
+    <!-- <script type="text/x-template" id="folders-component-template">
+        <template>
+            <ul class="folders">
+                <li>Folders</li>
+                <li v-bind:folder="folder"></li>
+            </ul>
+        </template>
+    </script> -->
+                                        
+    <script type="text/x-template" id="folder-component-template">
+        <template>
+            <li class="folder" v-bind:class="[folder.leaf ? 'is-leaf' : 'is-folder']">
+            <span v-on:click="expand()">{{ folder.text }}</span>
+        
+            <ul class="sub-folders" v-if="folder.children && folder.children.length > 0" v-show="folder.expanded">
+                <li v-for="child in folder.children" v-bind:folder="child"></li>
+            </ul>
+            <div class="folder-empty" v-else v-show="!folder.leaf && folder.expanded">No Data</div>
+            </li>
+            <folder-component
+                v-for="(child, index) in node.children"
+                :folder='treeData'>
+        </template>
+    </script>
+    
+    <script>
+        const treeData = {
+            text: 'Root Folder',
+            leaf: false,
+            expanded: true,
+            children: [{
+                text: 'Sub Folder 1',
+                leaf: false,
+                expanded: false,
+                children: [{
+                    text: 'Sub Sub Folder 1',
+                    leaf: false,
+                    expanded: false,
+                        children: [{
+                        text: 'SomeFile1.js',
+                        leaf: true
+                        }]
+                }, {
+                    text: 'Sub Sub Folder 2',
+                    leaf: false,
+                    expanded: false,
+                    children: []
+                }, {
+                    text: 'SomeFile.txt',
+                    leaf: true
+                }]
+            }]
+        };
+
+        new Vue({
+            el: '#app',
+            data: treeData,
+        });
+
+        Vue.component('folder-component', {
+            name: 'folder-component',
+            props: {
+                node: Object
+            },
+            template: '#folder-component-template',
+            methods: {
+                expand() {
+                    if (this.folder.leaf) {
+                        return;
+                    }
+
+                    this.folder.expanded = !this.folder.expanded;
+                }
+            }
+        })
+
+//         const app = new Vue({
+//             el: '#app',
+//             data: {
+//                 label: 'Новая цель',
+//                 goalsLevel1: [
+//                     { 
+//                         label: 'Выучить английский',
+//                         goalsLevel2: [
+//                             {
+//                                 label: 'Заниматься',
+//                             }, 
+//                             {
+//                                 label: 'Трудиться',
+//                             }, 
+//                             {
+//                                 label: 'Пахать',
+//                             }
+//                         ]
+//                     },
+//                     { 
+//                         label: 'Выучить немецкий',
+//                         steps: ['шаг1', 'шаг2', 'шаг3']
+//                     },
+//                     { 
+//                         label: 'Выучить испанский',
+//                         steps: ['шаг1', 'шаг2', 'шаг3']
+//                     },
+//                 ]
+//             },
+//             methods: {
+//                 addGoal: function() {
+//                     this.goalsLevel1.push(
+//                         { 
+//                         label: this.label,
+//                         steps: ['шаг1', 'шаг2', 'шаг3']
+//                         }
+//                     )
+//                     this.label = '';
+//                 },
+//                 reverseLabel: function() {
+//                     this.label=this.label.split('').reverse().join('')
+//                 }
+//             },
+//             computed: {
+//                 totalNumberOfGoals: function () {
+//                     return this.goalsLevel1.length
+//             }
+//   }
+//         })
+    </script>
+
+
+</body>
+</html>
