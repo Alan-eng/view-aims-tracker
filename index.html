@@ -14,10 +14,16 @@
     <li>
       <div
         :class="{bold: isFolder}"
-        @click="toggle"
         @dblclick="makeFolder">
         {{ item.name }}
-        <span v-if="isFolder">[{{ isOpen ? '-' : '+' }}]</span>
+        <span 
+            @click="toggle"
+            v-if="isFolder">[{{ isOpen ? '-' : '+' }}]</span>
+        <input 
+            v-model="editedText"
+            v-bind:style="{ color: 'blue', display: isEditing ? 'inline-block' : 'none' }">
+        <button
+            @click="editText">edit text</button>
       </div>
       <ul v-show="isOpen" v-if="isFolder">
         <tree-item
@@ -82,7 +88,9 @@
     },
     data: function () {
         return {
-        isOpen: false
+        isOpen: false,
+        isEditing: false,
+        editedText: '',
         }
     },
     computed: {
@@ -102,11 +110,15 @@
             this.$emit('make-folder', this.item)
             this.isOpen = true
         }
+        },
+        editText: function(){
+            this.isEditing = !this.isEditing
+            this.editedText = this.item.name
         }
     }
     })
 
-    // boot up the demo
+    // boot up the demoß
     var demo = new Vue({
     el: '#demo',
     data: {
