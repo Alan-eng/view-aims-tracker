@@ -14,16 +14,26 @@
     <li>
       <div
         :class="{bold: isFolder}"
-        @dblclick="makeFolder">
-        {{ item.name }}
+        >
+        <span
+            @click="toggle"
+        >{{ isEditing? '' : item.name }}</span>
+        <input 
+            autofocus 
+            autocomplete="off"
+            v-todo-focus="item.name == editedText"
+            v-model="editedText"
+            v-bind:style="{ color: 'blue', display: isEditing ? 'inline-block' : 'none' }"
+            @blur="doneEdit(editedText)"
+            @keyup.enter="doneEdit(editedText)"
+            @keyup.esc="doneEdit(editedText)">
         <span 
             @click="toggle"
             v-if="isFolder">[{{ isOpen ? '-' : '+' }}]</span>
-        <input 
-            v-model="editedText"
-            v-bind:style="{ color: 'blue', display: isEditing ? 'inline-block' : 'none' }">
         <button
-            @click="editText">edit text</button>
+            @click="editText">{{isEditing? 'done' : 'edit text' }}</button>
+        <button
+            @click="makeFolder">{{isEditing? 'done' : 'add child' }}</button>
       </div>
       <ul v-show="isOpen" v-if="isFolder">
         <tree-item
@@ -114,8 +124,19 @@
         editText: function(){
             this.isEditing = !this.isEditing
             this.editedText = this.item.name
+        },
+        doneEdit: function(text){
+            this.item.name = text
+            this.isEditing = false
         }
+    },
+    directives: {
+    'todo-focus': function (el, binding) {
+      if (binding.value) {
+        el.focus()
+      }
     }
+  }
     })
 
     // boot up the demoß
